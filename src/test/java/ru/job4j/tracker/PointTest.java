@@ -30,4 +30,13 @@ public class PointTest {
         double rsl = c.distance(b);
         assertThat(rsl, closeTo(3.1, 0.1));
     }
+
+    @Test
+    public void xYZ() {
+        Point a = new Point(3, 5, 6);
+        Point c = new Point(3, 5, 1);
+        Point b = new Point(4, 2, 2);
+        double rsl = a.distance3d(b);
+        assertThat(rsl, closeTo(5, 0.1));
+    }
 }
