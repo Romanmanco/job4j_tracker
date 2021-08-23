@@ -18,15 +18,11 @@ public class Triangle {
     }
 
     public double semiPerimeter(double a, double b, double c) {
-        return (a + b + c)/2.0;
+        return (a + b + c)/2;
     }
 
     public boolean exist(double ab, double ac, double bc) {
-        if(ab + ac < bc || ac + bc < ab || ab + bc < ac){
-            return true;
-        } else {
-            return false;
-        }
+        return ab + ac > bc && ac + bc > ab && ab + bc > ac;
     }
 
     public double area() {
