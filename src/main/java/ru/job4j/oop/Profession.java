@@ -2,37 +2,26 @@ package ru.job4j.oop;
 
 public class Profession {
 
-    private String name;
+    public String name;
 
-    private String surname;
+    public String surname;
 
-    private String education;
+    public String education;
 
-    private String birthday;
+    public String birthday;
 
-    public Profession() {
-    }
-
-    public Profession(String name, String surname, String education, String birthday) {
-        this.name = name;
-        this.surname = surname;
-        this.education = education;
-        this.birthday = birthday;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public String getEducation() {
-        return education;
-    }
-
-    public String getBirthday() {
-        return birthday;
+    public static void main(String[] args) {
+        Surgeon surgeon = new Surgeon();
+        surgeon.showInfo();
+        surgeon.work();
+        Dentist dentist = new Dentist();
+        dentist.showInfo();
+        dentist.work();
+        Programmer programmer = new Programmer();
+        programmer.showInfo();
+        programmer.work();
+        Builder builder = new Builder();
+        builder.showInfo();
+        builder.work();
     }
 }
