@@ -15,9 +15,10 @@ public class Library {
             Book book = books[index];
             System.out.println(book.getName() + " - " + book.getPage());
         }
-        System.out.println("Заменить войну и мир на Великий Гэтсби.");
-        Book greatGatsby = new Book("Великий Гэтсби", 545);
-        books[0] = greatGatsby;
+        System.out.println("Заменить войну и мир на Чистый код.");
+        Book temp = books[0];
+        books[0] = books[3];
+        books[3] = temp;
         for (int index = 0; index < books.length; index++) {
             Book book = books[index];
             System.out.println(book.getName() + " - " + book.getPage());
@@ -25,7 +26,7 @@ public class Library {
         System.out.println("Показать только Чистый код.");
         for (int index = 0; index < books.length; index++) {
             Book book = books[index];
-            if (book.getName().equals("Чистый Код")) {
+            if ("Чистый Код".equals(book.getName())) {
                 System.out.println(book.getName() + " - " + book.getPage());
             }
         }
