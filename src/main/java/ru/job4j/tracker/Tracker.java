@@ -48,18 +48,28 @@ public class Tracker {
 
     public boolean replace(int id, Item item) {
         int index = indexOf(id);
-        if (index != -1) {
-            items[index] = item;
+        if (index == 0) {
+            item.getId();
+            System.out.println("Такого элемента нет");
             return true;
         }
-            return false;
+        boolean rsl = index != -1;
+        if (rsl) {
+            items[index] = item;
+        }
+        return rsl;
     }
 
     public boolean delete(int id) {
-        if (indexOf(id) == id) {
-            System.arraycopy(items, id, items, id, 100);
-            return true;
-        }
+        int index = indexOf(id);
+        if (index == 0) {
             return false;
+        } else {
+            if (index == id) {
+                System.arraycopy(items, id, items, id, 100);
+                return true;
+            }
+            return false;
+        }
     }
 }
