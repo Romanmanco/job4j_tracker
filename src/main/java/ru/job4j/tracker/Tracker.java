@@ -57,10 +57,9 @@ public class Tracker {
 
     public boolean delete(int id) {
         if (indexOf(id) == id) {
-            items[indexOf(id)] = null;
+            System.arraycopy(items, id, items, id, 100);
             return true;
-        } else {
-            return false;
         }
+            return false;
     }
 }
