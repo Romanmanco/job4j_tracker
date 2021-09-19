@@ -48,12 +48,13 @@ public class Tracker {
 
     public boolean replace(int id, Item item) {
         int index = indexOf(id);
-        if (index == 0) {
-            item.getId();
-            System.out.println("Такого элемента нет");
-            return true;
-        }
+//        if (index == 0) {
+//            item.getId();
+//            System.out.println("Такого элемента нет");
+//            return true;
+//        }
         boolean rsl = index != -1;
+        item.setId(id);
         if (rsl) {
             items[index] = item;
         }
