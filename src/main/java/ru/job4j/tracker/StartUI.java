@@ -10,5 +10,8 @@ public class StartUI extends Item{
         LocalDateTime currentDateTime = LocalDateTime.now();
         System.out.println("Текущие дата и время до форматирования: " + currentDateTime);
         System.out.println("Текущие дата и время после форматирования: " + currentDateTimeFormat);
+
+        Item item = new Item(2, "Today" + currentDateTimeFormat);
+        System.out.println(item);
     }
 }
