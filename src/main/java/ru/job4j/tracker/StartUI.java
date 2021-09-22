@@ -1,17 +1,37 @@
 package ru.job4j.tracker;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
 
 public class StartUI extends Item{
-    public void main(String[] args) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMMM-EEEE-yyyy HH:mm:ss");
-        String currentDateTimeFormat = new Item().getCreated().format(formatter);
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        System.out.println("Текущие дата и время до форматирования: " + currentDateTime);
-        System.out.println("Текущие дата и время после форматирования: " + currentDateTimeFormat);
+    public void init(Scanner scanner, Tracker tracker) {
+        boolean run = true;
+        while (run) {
+            showMenu();
+            System.out.print("Select: ");
+            int select = Integer.parseInt(scanner.nextLine());
+            if (select != 6) {
+                System.out.println("Пользователь выбрал: " + select);
+            } else {
+                run = false;
+            }
+        }
+    }
 
-        Item item = new Item(2, "Today" + currentDateTimeFormat);
-        System.out.println(item);
+    private void showMenu() {
+        String[] menu = {
+                "Add new Item", "Show all items", "Edit item",
+                "Delete item", "Find item by id", "Find items by name",
+                "Exit Program"
+        };
+        System.out.println("Menu:");
+        for (int i = 0; i < menu.length; i++) {
+            System.out.println(i + ". " + menu[i]);
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Tracker tracker = new Tracker();
+        new StartUI().init(scanner, tracker);
     }
 }
