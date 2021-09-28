@@ -14,19 +14,9 @@ public class Matches {
             int matches = Integer.parseInt(input.nextLine());
             turn = !turn;
 
-            if (matches == 1) {
-                int value = count - 1;
-                count = value;
-                System.out.println(value);
-            } else if (matches == 2) {
-                int value = count - 2;
-                count = value;
-                System.out.println(value);
-            } else if (matches == 3) {
-                int value = count - 3;
-                count = value;
-                System.out.println(value);
-            }
+            int value = count - matches;
+            count = value;
+            System.out.println(value);
             if (matches > 3 || matches < 1 || matches > count) {
                 System.out.println("Введено неверное число");
             }
