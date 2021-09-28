@@ -14,12 +14,12 @@ public class Matches {
             int matches = Integer.parseInt(input.nextLine());
             turn = !turn;
 
-            int value = count - matches;
-            count = value;
-            System.out.println(value);
             if (matches > 3 || matches < 1 || matches > count) {
                 System.out.println("Введено неверное число");
             }
+            int value = count - matches;
+            count = value;
+            System.out.println(value);
         }
         if (!turn) {
             System.out.println("Выиграл первый игрок");
