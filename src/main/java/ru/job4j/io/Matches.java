@@ -17,9 +17,9 @@ public class Matches {
                 System.out.println("Введено неверное число");
                 continue;
             }
-            int value = count - matches;
-            count = value;
-            System.out.println(value);
+            turn = !turn;
+            count -= matches;
+            System.out.println(count);
         }
         if (!turn) {
             System.out.println("Выиграл первый игрок");
