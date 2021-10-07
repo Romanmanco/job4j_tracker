@@ -4,7 +4,7 @@ public class Bus implements Transport, Vehicle {
 
     @Override
     public void went() {
-        System.out.println("Автобус едет в краснодар.");
+        System.out.println("Автобус едет в Краснодар.");
     }
 
     @Override
