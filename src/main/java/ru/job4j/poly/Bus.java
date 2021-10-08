@@ -9,7 +9,6 @@ public class Bus implements Transport, Vehicle {
 
     @Override
     public void passenger(int numPas) {
-        passenger(24);
     }
 
     @Override
