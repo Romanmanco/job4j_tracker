@@ -40,7 +40,7 @@ public class StartUI extends Item {
         if (tracker.delete(id)) {
             System.out.println("Заявка удалена успешно.");
         } else {
-            System.out.println("Ошибка удаления заявки.");
+            System.out.println("Такой заявки не существует.");
         }
     }
 
