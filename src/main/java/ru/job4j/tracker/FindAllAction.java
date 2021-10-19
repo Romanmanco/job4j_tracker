@@ -10,8 +10,12 @@ public class FindAllAction implements UserAction {
     public boolean execute(Input input, Tracker tracker) {
         System.out.println("=== Show all items ====");
         Item[] array = tracker.findAll();
-        for (Item item : array) {
-            System.out.println(item);
+        if (array.length > 0) {
+            for (Item item : array) {
+                System.out.println(item);
+            }
+        } else {
+            System.out.println("Хранилище не содержет заявок.");
         }
         return true;
     }
