@@ -11,7 +11,7 @@ public class College {
         student.setGroup("Стажер ");
         student.setCreated(new Date());
 
-        System.out.println("Студент ФИО: " + student.getName() + student.getSurname() + student.getPatronymic() +
-                System.lineSeparator() + "Группа и дата поступления: " + student.getGroup() + student.getCreated());
+        System.out.println("Студент ФИО: " + student.getName() + student.getSurname() + student.getPatronymic()
+                + System.lineSeparator() + "Группа и дата поступления: " + student.getGroup() + student.getCreated());
     }
 }

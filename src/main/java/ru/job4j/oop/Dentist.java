@@ -2,7 +2,7 @@ package ru.job4j.oop;
 
 public class Dentist extends Doctor {
 
-    public String healTooth;
+    private String healTooth;
 
     public Dentist(String name, String surname, String education, String birthday, String heal, String healTooth) {
         super(name, surname, education, birthday, heal);
