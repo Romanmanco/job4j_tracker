@@ -181,7 +181,7 @@ public class StartUITest {
                 + System.lineSeparator()
                 + "=== Find items by name ===="
                 + System.lineSeparator()
-                + item.toString()
+                + item
                 + System.lineSeparator()
                 + "Menu:" + System.lineSeparator()
                 + "0. Find item by name"
