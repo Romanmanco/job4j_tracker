@@ -2,13 +2,13 @@ package ru.job4j.oop;
 
 public class Profession {
 
-    public String name;
+    private String name;
 
-    public String surname;
+    private String surname;
 
-    public String education;
+    private String education;
 
-    public String birthday;
+    private String birthday;
 
     public Profession(String name, String surname, String education, String birthday) {
         this.name = name;
