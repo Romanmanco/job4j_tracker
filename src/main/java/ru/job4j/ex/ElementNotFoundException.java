@@ -12,9 +12,9 @@ public class ElementNotFoundException extends Exception {
             return rsl;
         }
 
-        public static void main(String[] args) {
+        public static void main(String[] value, String key) {
             try {
-                indexOf(new String[]{"[12]"}, "22");
+                indexOf(value, key);
             } catch (ElementNotFoundException e) {
                 e.printStackTrace();
             }
