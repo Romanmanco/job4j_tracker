@@ -8,7 +8,7 @@ public class ElementNotFoundException extends Exception {
                     return i;
                 }
             }
-            throw new IllegalArgumentException("Number should be more or equals than null.");
+            throw new IllegalArgumentException("Number should be more or equals than 0.");
         }
 
         public static void main(String[] value, String key) {
