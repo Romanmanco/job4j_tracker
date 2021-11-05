@@ -18,32 +18,15 @@ public class ValidateInput implements Input {
     public int askInt(String question) {
         boolean invalid = true;
         int value = -1;
-        try {
-            do {
-                String rsl = in.askStr(question);
-                if (!isNumber(rsl)) {
-                    System.out.println("Please enter validate data again.");
-                    continue;
-                }
-                value = Integer.parseInt(rsl);
+        do {
+            try {
+                value = in.askInt(question);
                 invalid = false;
+            } catch (NumberFormatException nfe) {
+                out.println("Please enter validate data again.");
             }
-            while (invalid);
-        } catch (NumberFormatException nfe) {
-            nfe.printStackTrace();
-        }
+        } while (invalid);
         return value;
     }
-
-    private boolean isNumber(String value) {
-        boolean rsl = true;
-        char[] check = value.toCharArray();
-        for (char num : check) {
-            if (num < 48 || num > 57) {
-                rsl = false;
-                break;
-            }
-        }
-        return rsl;
-    }
 }
+
