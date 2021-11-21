@@ -20,7 +20,7 @@ public class Calculator {
     }
 
     public static int minus(int y) {
-        return x - y;
+        return y - x;
     }
 
     public int multiply(int a) {
@@ -28,13 +28,13 @@ public class Calculator {
     }
 
     public int divide(int a) {
-        return x / a;
+        return a / x;
     }
 
     public static void main(String[] args) {
         int result = sum(10);
         System.out.println(result);
-        int result1 = minus(2);
+        int result1 = minus(56);
         System.out.println(result1);
         Calculator calculator = new Calculator();
         int multiply = calculator.multiply(5);
