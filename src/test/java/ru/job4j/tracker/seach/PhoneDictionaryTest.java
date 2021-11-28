@@ -7,6 +7,7 @@ import ru.job4j.search.PhoneDictionary;
 import java.util.ArrayList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class PhoneDictionaryTest {
 
@@ -26,12 +27,8 @@ public class PhoneDictionaryTest {
         phones.add(
                 new Person("Dmitry", "Fursa", "456675", "Moscow")
         );
-        try {
-            ArrayList<Person> persons = phones.find("Petr");
-            assertThat(persons.get(0).getName(), is("Dmitry"));
-        } catch (IndexOutOfBoundsException ioobe) {
-            System.out.println("Пользователя нет в списке.");
-        }
+        ArrayList<Person> persons = phones.find("Petr");
+        assertThat(persons.get(0).getSurname(), is("Dmitry"));
     }
 
     @Test
@@ -41,6 +38,6 @@ public class PhoneDictionaryTest {
                 new Person("Denis", "Budeny", "456675", "Moscow")
         );
         ArrayList<Person> persons = phones.find("Maxim");
-        assertThat(persons.isEmpty(), is(true));
+        assertTrue(persons.isEmpty());
     }
 }
