@@ -25,16 +25,6 @@ public class PhoneDictionaryTest {
     public void whenNotFindByName() {
         PhoneDictionary phones = new PhoneDictionary();
         phones.add(
-                new Person("Dmitry", "Fursa", "456675", "Moscow")
-        );
-        ArrayList<Person> persons = phones.find("Petr");
-        assertThat(persons.get(0).getSurname(), is("Dmitry"));
-    }
-
-    @Test
-    public void whenEmpty() {
-        PhoneDictionary phones = new PhoneDictionary();
-        phones.add(
                 new Person("Denis", "Budeny", "456675", "Moscow")
         );
         ArrayList<Person> persons = phones.find("Maxim");
