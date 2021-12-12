@@ -23,6 +23,16 @@ public class UserTest {
     }
 
     @Test
+    public void whenNameEquails() {
+        Set<User> users = new TreeSet<>();
+        users.add(new User("Roman", 28));
+        users.add(new User("Roman", 25));
+        Iterator<User> it = users.iterator();
+        assertThat(it.next(), is(new User("Roman", 25)));
+        assertThat(it.next(), is(new User("Roman", 28)));
+    }
+
+    @Test
     public void whenComparePertVSIvan() {
         int rsl = new User("Petr", 32)
                 .compareTo(
