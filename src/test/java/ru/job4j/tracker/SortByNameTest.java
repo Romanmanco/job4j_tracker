@@ -18,8 +18,11 @@ public class SortByNameTest {
                 new Item("c", 3),
                 new Item("b", 2)
         );
-        List<Item> expected = items.stream().sorted(Comparator.
-                comparing(Item::getName)).collect(Collectors.toList());
+        List<Item> expected = Arrays.asList(
+                new Item("a", 1),
+                new Item("b", 2),
+                new Item("c", 3)
+        );
         Collections.sort(items);
         assertThat(items, is(expected));
     }
@@ -31,10 +34,11 @@ public class SortByNameTest {
                 new Item("c", 3),
                 new Item("b", 2)
         );
-        List<Item> expected = items.stream()
-                .sorted(Comparator.comparingInt(Item::getPriority)
-                        .reversed())
-                .collect(Collectors.toList());
+        List<Item> expected = Arrays.asList(
+                new Item("c", 3),
+                new Item("b", 2),
+                new Item("a", 1)
+        );
         items.sort(Collections.reverseOrder());
         assertThat(items, is(expected));
     }
