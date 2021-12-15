@@ -2,6 +2,12 @@ package ru.job4j.bank;
 
 import java.util.Objects;
 
+/**
+ * Класс описывает аккаунт банковского клиента,
+ * включает в себя конструктор, геттеры и сеттеры.
+ * @author Roman Manco
+ * @version 1.0
+ */
 public class Account {
     private String requisite;
     private double  balance;
@@ -27,6 +33,11 @@ public class Account {
         this.balance = balance;
     }
 
+    /**
+     * Для корректной работы переопределены методы equals и hashCode.
+     * @param o - аккаунт.
+     * @return возвращает сравнение по реквизитам аккаунта.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) {

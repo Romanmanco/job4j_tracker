@@ -2,6 +2,12 @@ package ru.job4j.bank;
 
 import java.util.Objects;
 
+/**
+ * Класс описывает пользователя, включает в себя
+ * конструктор, геттеры и сеттеры.
+ * @author Roman Manco
+ * @version 1.0
+ */
 public class User {
     private String passport;
     private String username;
@@ -27,6 +33,11 @@ public class User {
         this.username = username;
     }
 
+    /**
+     * Для корректной работы переопределены методы equals и hashCode.
+     * @param o - пользователь.
+     * @return возвращает сравнение по паспорту пользователя.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) {
