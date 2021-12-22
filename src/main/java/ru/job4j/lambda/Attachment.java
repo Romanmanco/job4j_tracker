@@ -2,7 +2,7 @@ package ru.job4j.lambda;
 
 import java.util.Comparator;
 
-public class Attachment implements Comparator<Attachment> {
+public class Attachment {
     private String name;
     private int size;
 
@@ -27,8 +27,8 @@ public class Attachment implements Comparator<Attachment> {
                 + '}';
     }
 
-    @Override
-    public int compare(Attachment left, Attachment right) {
-        return left.getSize() - right.getSize();
-    }
+//    @Override
+//    public int compare(Attachment left, Attachment right) {
+//        return left.getSize() - right.getSize();
+//    }
 }
