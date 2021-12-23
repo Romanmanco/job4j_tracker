@@ -26,9 +26,4 @@ public class Attachment {
                 + ", size=" + size
                 + '}';
     }
-
-//    @Override
-//    public int compare(Attachment left, Attachment right) {
-//        return left.getSize() - right.getSize();
-//    }
 }
