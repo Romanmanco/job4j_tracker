@@ -24,6 +24,7 @@ public class FunctionalInterfaces {
                 System.out.println("key: " + integer + " value: " + map.get(integer));
             }
         }
+
         Supplier<List<String>> sup = () -> new ArrayList<>(map.values());
         List<String> strings = sup.get();
 
