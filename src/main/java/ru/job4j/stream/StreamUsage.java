@@ -3,6 +3,7 @@ package ru.job4j.stream;
 import java.util.List;
 
 public class StreamUsage {
+
     public static class Task {
         private final String name;
         private final long spent;
