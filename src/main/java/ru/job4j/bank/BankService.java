@@ -54,12 +54,16 @@ public class BankService {
      * @return возвращает реквизиты.
      */
     public Account findByRequisite(String passport, String requisite) {
+        Account account = null;
         User user = findByPassport(passport);
-        return users.get(user)
-                .stream()
-                .filter(u -> u.getRequisite().equals(requisite))
-                .findFirst()
-                .orElse(null);
+        if (user != null) {
+            return users.get(user)
+                    .stream()
+                    .filter(u -> u.getRequisite().equals(requisite))
+                    .findFirst()
+                    .orElse(null);
+        }
+        return account;
     }
 
     /**
