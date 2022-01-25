@@ -12,7 +12,7 @@ public class PhoneDictionary {
 
     public ArrayList<Person> findByKey(String key) {
         ArrayList<Person> result = new ArrayList<>();
-        for (Person person : persons) {
+        for (var person : persons) {
             if (person.getName().contains(key)
                     || person.getSurname().contains(key)
                     || person.getPhone().contains(key)
@@ -32,7 +32,7 @@ public class PhoneDictionary {
 
         Predicate<Person> combine = nameCheck.or(surnameCheck.or(phoneCheck.or(addresCheck)));
         ArrayList<Person> result = new ArrayList<>();
-        for (Person person : persons) {
+        for (var person : persons) {
             if (combine.test(person)) {
             result.add(person);
         }
