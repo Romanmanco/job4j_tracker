@@ -26,12 +26,10 @@ public class BankService {
      * @param account добавляется, если паспорт уникален.
      */
     public void addAccount(String passport, Account account) {
-        User user = findByPassport(passport);
-        if (user != null) {
-            List<Account> accountList = users.get(user);
-            if (!accountList.contains(account)) {
-                accountList.add(account);
-            }
+        Optional<User> user = findByPassport(passport);
+        List<Account> accountList = users.get(user);
+        if (!accountList.contains(account)) {
+            accountList.add(account);
         }
     }
 
@@ -40,11 +38,14 @@ public class BankService {
      * @param passport метод позволяет найти паспорт.
      * @return возвращает паспорт.
      */
-    public User findByPassport(String passport) {
-        return users.keySet()
-                .stream()
-                .filter(u -> u.getPassport().equals(passport))
-                .findFirst().orElse(null);
+    public Optional<User> findByPassport(String passport) {
+        Optional<User> rsl = Optional.empty();
+        for (var user : users.keySet()) {
+            if (user.getPassport().equals(passport)) {
+                rsl = Optional.of(user);
+            }
+        }
+        return rsl;
     }
 
     /**
@@ -55,7 +56,7 @@ public class BankService {
      */
     public Account findByRequisite(String passport, String requisite) {
         Account account = null;
-        User user = findByPassport(passport);
+        Optional<User> user = findByPassport(passport);
         if (user != null) {
             return users.get(user)
                     .stream()
@@ -88,5 +89,14 @@ public class BankService {
             rsl = true;
         }
         return rsl;
+    }
+
+    public static void main(String[] args) {
+        BankService bank = new BankService();
+        bank.addUser(new User("321", "Petr Arsentev"));
+        Optional<User> opt = bank.findByPassport("3211");
+        if (opt.isPresent()) {
+            System.out.println(opt.get().getUsername());
+        }
     }
 }
