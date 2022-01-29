@@ -42,6 +42,7 @@ public class BankService {
      *
      * @param passport метод позволяет найти паспорт.
      * @return возвращает паспорт.
+     * Метод findFirst возвращает тип Optional.
      */
     public Optional<User> findByPassport(String passport) {
         return users.keySet().stream()
