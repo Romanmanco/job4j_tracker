@@ -28,6 +28,9 @@ public class Item implements Comparable<Item> {
         this.name = name;
     }
 
+    public Item(int id, String name, LocalDateTime date) {
+    }
+
     public int getId() {
         return id;
     }
