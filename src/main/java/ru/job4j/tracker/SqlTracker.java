@@ -1,58 +1,81 @@
 package ru.job4j.tracker;
 
+
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+/**
+ * Класс SqlTracker будет подключаться к базе данных,
+ * создавать в ней записи, редактировать, читать и удалять.
+ * Класс SqlTracker реализовывает интерфейс Store,
+ * а также интерфейс AutoCloseable, т.к. нам нужно обеспечить
+ * закрытие ресурса - подключения к базе данных.
+ * Помимо реализованных методов интерфейсов есть метод init():
+ *
+ * Для считывания файлов используйте ClassLoader.
+ * Данный класс позволяет искать ресурсы в папке resources.
+ * Метод getResourcesAsStream() возвращает поток ввода для файла,
+ * который находится в папке resources, с указанным именем.
+ *
+ * Для вставки и получения даты используйте методы JDBC
+ * setTimestamp(), getTimestamp().
+ * Ниже приведен пример преобразования Timestamp и LocalDateTime
+ * - Из Timestamp в LocalDateTime:
+ * long millis=System.currentTimeMillis();
+ * Timestamp timestamp = new Timestamp(millis);
+ * LocalDateTime localDateTime = timestamp.toLocalDateTime();
+ * - Из LocalDateTime в Timestamp:
+ * Timestamp timestampFromLDT = Timestamp.valueOf(localDateTime);
+ */
 public class SqlTracker implements Store, AutoCloseable {
 
-    private Connection cn;
-    private String table;
+    private Connection conn;
 
-    public SqlTracker() {
+    public SqlTracker(Connection conn) {
+        this.conn = conn;
     }
 
-    public SqlTracker(Connection cn, String table) {
-        this.cn = cn;
-        this.table = table;
+    public SqlTracker() {
+
     }
 
     public void init() {
-        try (InputStream in = SqlTracker.class.getClassLoader().getResourceAsStream("app.properties")) {
+        try (InputStream in = SqlTracker.class
+                .getClassLoader()
+                .getResourceAsStream("./src/main/java/resources/app.properties")) {
             Properties config = new Properties();
             config.load(in);
             Class.forName(config.getProperty("driver-class-name"));
-            cn = DriverManager.getConnection(
+            conn = DriverManager.getConnection(
                     config.getProperty("url"),
                     config.getProperty("username"),
                     config.getProperty("password")
             );
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
+        } catch (IOException | SQLException | ClassNotFoundException e) {
+            throw new IllegalArgumentException(e);
         }
     }
 
     @Override
     public void close() throws Exception {
-        if (cn != null) {
-            cn.close();
+        if (conn != null) {
+            conn.close();
         }
     }
 
     @Override
     public Item add(Item item) {
-        Timestamp timestampFromLDT = Timestamp.valueOf(item.getCreated());
-        String query = String.format("insert into %s (name, date) values (?, ?)", table);
-        try (PreparedStatement ps = cn.prepareStatement(
-                query,
-                Statement.RETURN_GENERATED_KEYS
-        )) {
-            ps.setString(1, item.getName());
-            ps.setTimestamp(2, timestampFromLDT);
-            ps.execute();
-            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+        try (PreparedStatement statement = conn.prepareStatement(
+                "insert into items(name, created) values(?, ?)",
+                Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, item.getName());
+            statement.setTimestamp(2, Timestamp.valueOf(item.getCreated()));
+            statement.executeUpdate();
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     item.setId(generatedKeys.getInt(1));
                 }
@@ -66,13 +89,12 @@ public class SqlTracker implements Store, AutoCloseable {
     @Override
     public boolean replace(int id, Item item) {
         boolean rsl = false;
-        Timestamp timestampFromLDT = Timestamp.valueOf(item.getCreated());
-        String query = String.format("update %s set name = ?, date = ? where id = ?", table);
-        try (PreparedStatement ps = cn.prepareStatement(query)) {
-            ps.setString(1, item.getName());
-            ps.setTimestamp(2, timestampFromLDT);
-            ps.setInt(3, id);
-            rsl = ps.executeUpdate() > 0;
+        try (PreparedStatement statement = conn.prepareStatement(
+                "update items set name = ?, created = ? where id = ?;")) {
+            statement.setString(1, item.getName());
+            statement.setTimestamp(2, Timestamp.valueOf(item.getCreated()));
+            statement.setInt(3, id);
+            rsl = statement.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -82,10 +104,10 @@ public class SqlTracker implements Store, AutoCloseable {
     @Override
     public boolean delete(int id) {
         boolean rsl = false;
-        String query = String.format("delete from %s where id = ?", table);
-        try (PreparedStatement ps = cn.prepareStatement(query)) {
-            ps.setInt(1, id);
-            rsl = ps.executeUpdate() > 0;
+        try (PreparedStatement statement = conn.prepareStatement(
+                "delete from items where id = ?;")) {
+            statement.setInt(1, id);
+            rsl = statement.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -94,46 +116,46 @@ public class SqlTracker implements Store, AutoCloseable {
 
     @Override
     public List<Item> findAll() {
-        List<Item> items = new ArrayList<>();
-        String query = String.format("select * from %s", table);
-        try (PreparedStatement ps = cn.prepareStatement(query)) {
-            try (ResultSet resultSet = ps.executeQuery()) {
-                while (resultSet.next()) {
-                    items.add(getItem(resultSet));
+        List<Item> list = new ArrayList<>();
+        try (PreparedStatement statement = conn.prepareStatement(
+                "select * from items;")) {
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    list.add(findBy(rs));
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return items;
+        return list;
     }
 
     @Override
     public List<Item> findByName(String key) {
-        List<Item> items = new ArrayList<>();
-        String query = String.format("select * from %s where name = ?", table);
-        try (PreparedStatement ps = cn.prepareStatement(query)) {
-            ps.setString(1, key);
-            try (ResultSet resultSet = ps.executeQuery()) {
-                while (resultSet.next()) {
-                    items.add(getItem(resultSet));
+        List<Item> list = new ArrayList<>();
+        try (PreparedStatement statement = conn.prepareStatement(
+                "select * from items where name like ?;")) {
+            statement.setString(1, key);
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    list.add(findBy(rs));
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return items;
+        return list;
     }
 
     @Override
     public Item findById(int id) {
         Item item = null;
-        String query = String.format("select * from %s where id = ?", table);
-        try (PreparedStatement ps = cn.prepareStatement(query)) {
-            ps.setInt(1, id);
-            try (ResultSet resultSet = ps.executeQuery()) {
-                if (resultSet.next()) {
-                    item = getItem(resultSet);
+        try (PreparedStatement statement = conn.prepareStatement(
+                "select * from items where id = ?;")) {
+            statement.setInt(1, id);
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    item = findBy(rs);
                 }
             }
         } catch (SQLException e) {
@@ -142,11 +164,10 @@ public class SqlTracker implements Store, AutoCloseable {
         return item;
     }
 
-    private Item getItem(ResultSet resultSet) throws SQLException {
+    private Item findBy(ResultSet rs) throws SQLException {
         return new Item(
-                resultSet.getInt("id"),
-                resultSet.getString("name"),
-                resultSet.getTimestamp("date").toLocalDateTime()
-        );
+                rs.getInt("id"),
+                rs.getString("name"),
+                rs.getTimestamp("created").toLocalDateTime());
     }
 }
