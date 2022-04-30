@@ -33,10 +33,10 @@ import java.util.Properties;
  */
 public class SqlTracker implements Store, AutoCloseable {
 
-    private Connection conn;
+    private Connection connection;
 
-    public SqlTracker(Connection conn) {
-        this.conn = conn;
+    public SqlTracker(Connection connection) {
+        this.connection = connection;
     }
 
     public SqlTracker() {
@@ -50,7 +50,7 @@ public class SqlTracker implements Store, AutoCloseable {
             Properties config = new Properties();
             config.load(in);
             Class.forName(config.getProperty("driver-class-name"));
-            conn = DriverManager.getConnection(
+            connection = DriverManager.getConnection(
                     config.getProperty("url"),
                     config.getProperty("username"),
                     config.getProperty("password")
@@ -62,14 +62,14 @@ public class SqlTracker implements Store, AutoCloseable {
 
     @Override
     public void close() throws Exception {
-        if (conn != null) {
-            conn.close();
+        if (connection != null) {
+            connection.close();
         }
     }
 
     @Override
     public Item add(Item item) {
-        try (PreparedStatement statement = conn.prepareStatement(
+        try (PreparedStatement statement = connection.prepareStatement(
                 "insert into items(name, created) values(?, ?)",
                 Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, item.getName());
@@ -89,7 +89,7 @@ public class SqlTracker implements Store, AutoCloseable {
     @Override
     public boolean replace(int id, Item item) {
         boolean rsl = false;
-        try (PreparedStatement statement = conn.prepareStatement(
+        try (PreparedStatement statement = connection.prepareStatement(
                 "update items set name = ?, created = ? where id = ?;")) {
             statement.setString(1, item.getName());
             statement.setTimestamp(2, Timestamp.valueOf(item.getCreated()));
@@ -104,7 +104,7 @@ public class SqlTracker implements Store, AutoCloseable {
     @Override
     public boolean delete(int id) {
         boolean rsl = false;
-        try (PreparedStatement statement = conn.prepareStatement(
+        try (PreparedStatement statement = connection.prepareStatement(
                 "delete from items where id = ?;")) {
             statement.setInt(1, id);
             rsl = statement.executeUpdate() > 0;
@@ -117,7 +117,7 @@ public class SqlTracker implements Store, AutoCloseable {
     @Override
     public List<Item> findAll() {
         List<Item> list = new ArrayList<>();
-        try (PreparedStatement statement = conn.prepareStatement(
+        try (PreparedStatement statement = connection.prepareStatement(
                 "select * from items;")) {
             try (ResultSet rs = statement.executeQuery()) {
                 while (rs.next()) {
@@ -133,7 +133,7 @@ public class SqlTracker implements Store, AutoCloseable {
     @Override
     public List<Item> findByName(String key) {
         List<Item> list = new ArrayList<>();
-        try (PreparedStatement statement = conn.prepareStatement(
+        try (PreparedStatement statement = connection.prepareStatement(
                 "select * from items where name like ?;")) {
             statement.setString(1, key);
             try (ResultSet rs = statement.executeQuery()) {
@@ -150,7 +150,7 @@ public class SqlTracker implements Store, AutoCloseable {
     @Override
     public Item findById(int id) {
         Item item = null;
-        try (PreparedStatement statement = conn.prepareStatement(
+        try (PreparedStatement statement = connection.prepareStatement(
                 "select * from items where id = ?;")) {
             statement.setInt(1, id);
             try (ResultSet rs = statement.executeQuery()) {
