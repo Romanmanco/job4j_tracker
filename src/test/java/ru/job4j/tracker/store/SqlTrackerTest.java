@@ -16,8 +16,7 @@ import java.util.List;
 import java.util.Properties;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 public class SqlTrackerTest {
 
@@ -62,7 +61,7 @@ public class SqlTrackerTest {
 
     @Test
     public void whenFindById() {
-        SqlTracker tracker = new SqlTracker();
+        SqlTracker tracker = new SqlTracker(connection);
         Item bug = new Item("Bug");
         Item item = tracker.add(bug);
         Item result = tracker.findById(item.getId());
@@ -71,49 +70,37 @@ public class SqlTrackerTest {
 
     @Test
     public void whenFindAll() {
-        SqlTracker tracker = new SqlTracker();
+        SqlTracker tracker = new SqlTracker(connection);
         Item first = tracker.add(new Item("First"));
         Item second = tracker.add(new Item("Second"));
-        Item result = tracker.findAll().get(0);
-        assertThat(result.getName(), is(first.getName()));
+        List<Item> all = tracker.findAll();
+        assertEquals(all.get(0).getName(), "First");
+        assertEquals(all.get(1).getName(), "Second");
     }
 
     @Test
-    public void whenFindByNameCheckArrayLength() {
-        SqlTracker tracker = new SqlTracker();
+    public void whenFindByName() {
+        SqlTracker tracker = new SqlTracker(connection);
         Item first = tracker.add(new Item("First"));
         Item second = tracker.add(new Item("Second"));
-        assertThat(tracker.findByName("First"), is(List.of(first, second)));
-    }
-
-    @Test
-    public void whenFindByNameCheckSecondItemName() {
-        SqlTracker tracker = new SqlTracker();
-        Item first = tracker.add(new Item("First"));
-        Item second = tracker.add(new Item("Second"));
-        assertThat(tracker.findByName("Second"), is(List.of(first, second)));
+        assertThat(tracker.findByName("Second"), is(List.of(second)));
     }
 
     @Test
     public void whenReplace() {
-        SqlTracker tracker = new SqlTracker();
-        Item bug = new Item();
-        bug.setName("Bug");
-        tracker.add(bug);
-        int id = bug.getId();
-        Item bugWithDesc = new Item();
-        bugWithDesc.setName("Bug with description");
+        SqlTracker tracker = new SqlTracker(connection);
+        Item item1 = tracker.add(new Item("bug"));
+        int id = item1.getId();
+        Item bugWithDesc = tracker.add(new Item("Bug with description"));
         tracker.replace(id, bugWithDesc);
         assertThat(tracker.findById(id).getName(), is("Bug with description"));
     }
 
     @Test
     public void whenDelete() {
-        SqlTracker tracker = new SqlTracker();
-        Item bug = new Item();
-        bug.setName("Bug");
-        tracker.add(bug);
-        int id = bug.getId();
+        SqlTracker tracker = new SqlTracker(connection);
+        Item item = tracker.add(new Item("bug"));
+        int id = item.getId();
         tracker.delete(id);
         assertNull(tracker.findById(id));
     }
