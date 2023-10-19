@@ -46,7 +46,7 @@ public class SqlTracker implements Store, AutoCloseable {
     public void init() {
         try (InputStream in = SqlTracker.class
                 .getClassLoader()
-                .getResourceAsStream("./src/main/java/resources/app.properties")) {
+                .getResourceAsStream("app.properties")) {
             Properties config = new Properties();
             config.load(in);
             Class.forName(config.getProperty("driver-class-name"));

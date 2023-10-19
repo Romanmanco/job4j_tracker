@@ -1,7 +1,5 @@
 package ru.job4j.tracker;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class StartUI extends Item {
@@ -39,9 +37,11 @@ public class StartUI extends Item {
             tracker.init();
             List<UserAction> actions = List.of(
                     new CreateAction(out),
+                    new CreateManyItems(out),
                     new FindAllAction(out),
                     new ReplaceAction(out),
                     new DeleteAction(out),
+                    new DeleteAllItems(out),
                     new FindByIdAction(out),
                     new FindByNameAction(out),
                     new ExitAction(out)

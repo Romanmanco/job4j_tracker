@@ -1,0 +1,26 @@
+При проведении профайлинга консольного приложения в котором реализован функционал работы с
+CRUD операциями с базой данных Postgresql были протестированы следующие команды:
+
+0. Add new Item
+1. Create many items
+2. Show all items
+3. Edit item
+4. Delete item
+5. Delete all items
+6. Find item by Id
+7. Find item by name
+8. Exit
+
+Каждая команда за исключением 5 были вызваны последовательно.
+Анализ работы программы был проведен с помощью jconsole. Поле CPU usage показало, что скачки нагрузки на процессор были
+в самом начале работы программы, далее прямая линия.
+Поле heap memory usage в ходе работы программы создало "лесенку", что говорит о постепенном увеличения оазмера,
+по мере выполнения команд.
+Поле threads и classes оказались наименнее информативными и были ввиде прямой черты.
+
+pid: 14888 ru.job4j.tracker.StartUI
+Virtual Machine: OpenJDK 64-Bit Server VM version 17+35-2724
+Oracle Corporation
+Uptime:8 minutes
+Process CPU time: 3,703 seconds
+Total compile time:2,678 seconds
